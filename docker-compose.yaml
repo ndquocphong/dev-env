@@ -1,0 +1,30 @@
+version: "3"
+services:
+  php-7.4-apache:
+    image: "php-7.4-apache"
+    build: 
+      context: ./php-7.4-apache
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+      - "22:22"
+    volumes:
+      - "./php-7.4-apache/custom.ini:/usr/local/etc/php/conf.d/custom.ini"
+      - "./php-7.4-apache/vhosts:/etc/apache2/vhosts"
+      - "www-data:/var/www/html"
+  mysql-5.7:
+    image: mysql:5.7
+    container_name: mysql-5.7
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=secret-password
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./mysql-5.7/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - "mysql-5.7-data:/var/lib/mysql"
+volumes:
+  www-data:
+  mysql-5.7-data:      
